@@ -7,11 +7,10 @@ import Player from "./Player";
 import { useDataLayerValue } from "./DataLayer";
 
 // Super object, which is going to interact between React app and spotify....
-
 const spotify = new SpotifyWebApi();
 
 function App() {
-  const [token, setToken] = useState([]);
+  const [token, setToken] = useState(null);
   const [{ user, playlists }, dispatch] = useDataLayerValue();
 
   useEffect(() => {
@@ -42,6 +41,13 @@ function App() {
         dispatch({
           type: "SET_PLAYLISTS",
           playlists: playlists,
+        });
+      });
+
+      spotify.getPlaylist("37i9dQZEVXbraniIIoy8Us").then((response) => {
+        dispatch({
+          type: "SET_DISCOVER_WEEKLY",
+          discover_weekly: response,
         });
       });
     }
